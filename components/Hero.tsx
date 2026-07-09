@@ -7,15 +7,9 @@ import { TextPlugin } from "gsap/TextPlugin";
 gsap.registerPlugin(TextPlugin);
 
 const LINES = [
-  { prompt: "whoami", output: "Syed Ali Novfal — Full Stack Developer" },
-  {
-    prompt: "cat focus.txt",
-    output: "React · Next.js · Node.js · Express · PostgreSQL",
-  },
-  {
-    prompt: "echo $STATUS",
-    output: "Shipping production frontend builds & backend APIs for live clients",
-  },
+  { text: "Full Stack Developer based in Chennai" },
+  { text: "I've built live apps for clients in Dubai, Italy & India" },
+  { text: "From pixel-perfect UIs to scalable APIs" },
 ];
 
 export default function Hero() {
@@ -28,30 +22,19 @@ export default function Hero() {
     const lineEls = el.querySelectorAll<HTMLElement>("[data-line]");
     const tl = gsap.timeline({ delay: 0.3 });
 
-    lineEls.forEach((lineEl, i) => {
-      const promptEl = lineEl.querySelector<HTMLElement>("[data-prompt]");
-      const outputEl = lineEl.querySelector<HTMLElement>("[data-output]");
-      if (!promptEl || !outputEl) return;
+    lineEls.forEach((lineEl) => {
+      const textEl = lineEl.querySelector<HTMLElement>("[data-text]");
+      if (!textEl) return;
 
-      const promptText = promptEl.dataset.full || "";
-      const outputText = outputEl.dataset.full || "";
+      const fullText = textEl.dataset.full || "";
 
       tl.set(lineEl, { autoAlpha: 1 })
-        .to(promptEl, {
-          duration: promptText.length * 0.035,
-          text: promptText,
+        .to(textEl, {
+          duration: fullText.length * 0.03,
+          text: fullText,
           ease: "none",
         })
-        .to(
-          outputEl,
-          {
-            duration: outputText.length * 0.015,
-            text: outputText,
-            ease: "none",
-          },
-          "+=0.15"
-        )
-        .to({}, { duration: 0.25 }); // small pause between lines
+        .to({}, { duration: 0.3 });
     });
 
     tl.call(() => {
@@ -82,31 +65,33 @@ export default function Hero() {
             </span>
           </div>
 
-          <div className="p-6 sm:p-8 font-mono text-sm sm:text-[15px] leading-relaxed">
+          <div className="p-6 sm:p-8 font-mono leading-relaxed">
             {LINES.map((line, i) => (
-              <div key={i} data-line className="opacity-0 mb-4">
-                <div>
-                  <span className="text-green">➜ </span>
-                  <span className="text-accent">~</span>{" "}
-                  <span data-prompt data-full={line.prompt} className="text-text" />
-                </div>
-                <div
-                  data-output
-                  data-full={line.output}
-                  className="text-muted pl-0 mt-1"
+              <div key={i} data-line className="opacity-0 mb-5">
+                <span
+                  data-text
+                  data-full={line.text}
+                  className={`
+                    ${i === 0 ? "text-accent text-lg sm:text-xl font-bold" : ""}
+                    ${i === 1 ? "text-text text-sm sm:text-base" : ""}
+                    ${i === 2 ? "text-muted text-sm sm:text-base" : ""}
+                  `}
                 />
               </div>
             ))}
-            <span id="cursor" className="inline-block w-2 h-4 bg-accent align-middle" />
+            <span
+              id="cursor"
+              className="inline-block w-2 h-5 bg-accent align-middle"
+            />
           </div>
         </div>
 
         <p className="mt-6 text-muted text-sm max-w-xl">
-          Scroll down — or run{" "}
+          Scroll down — or{" "}
           <a href="#work" className="text-accent underline underline-offset-2">
-            cd work.tsx
+            see what I&rsquo;ve shipped
           </a>{" "}
-          to see what&rsquo;s shipped to production.
+          to production.
         </p>
       </div>
     </section>
